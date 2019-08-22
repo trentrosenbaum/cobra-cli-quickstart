@@ -1,5 +1,5 @@
 # cobra-cli-quickstart
-[![Build Status](https://travis-ci.org/trentrosenbaum/cobra-cli-quickstart.svg?branch=introduce-travis-ci)](https://travis-ci.org/trentrosenbaum/cobra-cli-quickstart)
+[![Build Status](https://travis-ci.org/trentrosenbaum/cobra-cli-quickstart.svg?branch=master)](https://travis-ci.org/trentrosenbaum/cobra-cli-quickstart)
 
 This is a simple cobra cli quickstart project written in Go.  The aim of the repo is to provide a starting point for a new Go cli project.
 
