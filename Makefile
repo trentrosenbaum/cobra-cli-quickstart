@@ -25,7 +25,7 @@ VERSION ?= vlocal
 COMMIT = $(shell git rev-parse HEAD)
 BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 
-LDFLAGS := -ldflags "-X=main.version=$(VERSION) -X=main.commit=$(COMMIT) -X=main.branch=$(BRANCH)"
+LDFLAGS := -ldflags "-X=main.tag=$(VERSION) -X=main.commit=$(COMMIT) -X=main.branch=$(BRANCH)"
 BUILDARGS ?=
 
 # Go source files, excluding vendor directory
