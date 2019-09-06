@@ -1,6 +1,11 @@
 package main
 
-import "github.com/trentrosenbaum/cobra-cli-quickstart/cmd"
+import (
+	"github.com/trentrosenbaum/cobra-cli-quickstart/cmd"
+	"github.com/trentrosenbaum/cobra-cli-quickstart/config"
+	"github.com/trentrosenbaum/cobra-cli-quickstart/quickstart"
+	"log"
+)
 
 
 var tag string
@@ -9,11 +14,16 @@ var branch string
 
 func main() {
 
-	version := cmd.Version{
+	version := config.Version{
 		Tag:    tag,
 		Commit: commit,
 		Branch: branch,
 	}
 
-	cmd.Execute(version)
+	app, err := quickstart.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cmd.Execute(app, version)
 }
