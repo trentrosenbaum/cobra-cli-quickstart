@@ -1,8 +1,9 @@
 SHELL := /bin/bash
 
 # The name of the binary (default is current directory name)
-TARGET ?= $(shell echo $${PWD\#\#*/})
-.DEFAULT_GOAL := $(TARGET)
+NAME = cobra-cli-quickstart
+TARGET ?= $(BIN)/$(NAME)
+.DEFAULT_GOAL := $(NAME)
 
 HAS_GOLINT := $(shell command -v golint;)
 
@@ -36,10 +37,10 @@ all: dependencies check test build
 
 $(TARGET): $(SRC)
 	@ mkdir -p $(BIN)
-	go build $(BUILDARGS) $(LDFLAGS) -o $(BIN)/$(TARGET) .
+	go build $(BUILDARGS) $(LDFLAGS) -o $(TARGET) .
 
 build: $(TARGET)
-	@ echo "==> Building $(TARGET)"
+	@ echo "==> Building $(NAME)"
 .PHONY: build
 
 clean:
@@ -57,23 +58,23 @@ endif
 .PHONY: bootstrap
 
 test:
-	@ echo "==> Testing $(TARGET)"
+	@ echo "==> Testing $(NAME)"
 	@ go test $(BUILDARGS) -v -timeout=30s -tags="${GOTAGS}" ./...
 .PHONY: test
 
 test-race:
-	@ echo "==> Testing $(TARGET)"
+	@ echo "==> Testing $(NAME)"
 	@ go test $(BUILDARGS) -v -race -timeout=60s -tags="${GOTAGS}" ./...
 .PHONY: test-race
 
 install:
-	@ echo "==> Installing $(TARGET)"
-	@ go install $(BUILDARGS) $(LDFLAGS)
+	@ echo "==> Installing $(NAME)"
+	@ go build $(BUILDARGS) $(LDFLAGS) -o $(GOPATH)/bin/$(NAME)
 .PHONY: install
 
-uninstall: clean
-	@ echo "==> Uninstalling $(TARGET)"
-	rm -f $$(which ${TARGET})
+uninstall:
+	@ echo "==> Uninstalling $(NAME)"
+	@ rm -f $$(which ${NAME})
 .PHONY: uninstall
 
 fmt:
@@ -85,22 +86,22 @@ simplify:
 .PHONY: simplify
 
 check:
-	@ echo "==> Checking $(TARGET)"
+	@ echo "==> Checking $(NAME)"
 	@ gofmt -l -s $(SRC) | read; if [ $$? == 0 ]; then echo "[WARN] Fix formatting issues with 'make fmt'"; exit 1; fi
 	@ for d in $$(go list ./... | grep -v /vendor/); do golint $${d}; done
 	@ go vet ./...
 .PHONY: check
 
 run: install
-	@ $(TARGET) ${ARGS}
+	@ $(NAME) ${ARGS}
 .PHONY: run
 
 $(PLATFORMS):
 	@ echo "==> Building $(OS) distribution"
 	@ mkdir -p $(BIN)/$(OS)/$(ARCH)
 	@ mkdir -p $(DIST)
-	CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) go build $(BUILDARGS) $(LDFLAGS) -o $(BIN)/$(OS)/$(ARCH)/$(TARGET)
-	tar -zcvf $(DIST)/$(TARGET)-$(VERSION)-$(OS)-$(ARCH).tgz README.md LICENSE.md -C $(BIN)/$(OS)/$(ARCH) $(TARGET)
+	CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) go build $(BUILDARGS) $(LDFLAGS) -o $(BIN)/$(OS)/$(ARCH)/$(NAME)
+	tar -zcvf $(DIST)/$(NAME)-$(VERSION)-$(OS)-$(ARCH).tgz README.md LICENSE.md -C $(BIN)/$(OS)/$(ARCH) $(NAME)
 .PHONY: $(PLATFORMS)
 
 dist: $(PLATFORMS)
@@ -108,26 +109,26 @@ dist: $(PLATFORMS)
 .PHONY: dist
 
 benchmark:
-	@ echo "==> Benchmarking $(TARGET)"
+	@ echo "==> Benchmarking $(NAME)"
 	@ go test $(BUILDARGS) -bench -v ./...
 .PHONY: benchmark
 
 dependencies:
-	@ echo "==> Downloading dependencies for $(TARGET)"
+	@ echo "==> Downloading dependencies for $(NAME)"
 	@ go mod download
 .PHONY: dependencies
 
 vendor-dependencies:
-	@ echo "==> Downloading dependencies for $(TARGET)"
+	@ echo "==> Downloading dependencies for $(NAME)"
 	@ go mod vendor
 .PHONY: vendor-dependencies
 
 tidy-dependencies:
-	@ echo "==> Tidying dependencies for $(TARGET)"
+	@ echo "==> Tidying dependencies for $(NAME)"
 	@ go mod tidy
 .PHONY: tidy-dependencies
 
 clean-dependencies:
-	@ echo "==> Cleaning dependencies for $(TARGET)"
+	@ echo "==> Cleaning dependencies for $(NAME)"
 	@ rm -rf $(VENDOR)
 .PHONY: clean-dependencies
