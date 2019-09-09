@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 # The name of the binary (default is current directory name)
-NAME = cobra-cli-quickstart
+NAME = quickstart
 TARGET ?= $(BIN)/$(NAME)
 .DEFAULT_GOAL := $(NAME)
 
