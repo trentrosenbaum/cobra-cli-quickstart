@@ -2,13 +2,11 @@ language: go
 sudo: false
 env:
   global:
-  - GO111MODULE=on
-  - TARGET=cobra-cli-quickstart
+  - NAME=quickstart
   - VERSION=${TRAVIS_TAG:-vsnapshot}
   - PLATFORMS="darwin linux windows"
 go:
-  - 1.11.x
-  - 1.12.x
+  - 1.13.x
   - tip
 matrix:
   allow_failures:
@@ -25,9 +23,9 @@ deploy:
     secure: H5nGwRzSNSdjWEPB8bGhHLXKnPqBcZMFvcCd/XBmVhBW1fxBaMxFR3YFUnp/gj+TiHdqoN4DEe/NbCjqu/ciue1sorSOicQh9XO2eA08TxtKAjejJrGdrmcUAw9y6ag0g/LH75NkQuxEcHBRZfJ1frNvvfrXJ9sVVk8keEOBWGH7g3zpuvw9xwPBxVD2fWB8vsjwiC9ssfb9miJSJepgMpGN+ICyn13jj27EUFRFhd6k8Nu37wrLSgXM5GhjUEBNA+wddYvH8bs1/ZK75c0BabZtxAEntjIgzmeqJd6HKT/3cOLMSTp/SLecTvFYkXTzvULDGYf/YI94qjAVD66NUrdTTY0B98ZTL2l6QwQe9wCFzN2S4FKae6zL5u/Mf69obm8BGypuixRbKtVX7Va5JFTAHbcGQ823PubbHRPMt7rYk8XAtQUpFZm0PG5Z6oQBbKrihK61bU6VszmNWq//A69QK4gMIYWuC1QvKT/ynAcvJLgscSyIYhJs1ndwCQLDicxhH4FasAEsUnqLG2n80UjVraD1HVfuF7oekQiVDWD7Zhm5CU6qEzyJWkyqPXJxIic4KiU/IRVdQSf2IQpKf3vk4182NgqWTjhRoBRRUmLY6+0eoLG5xM9LEVIHrUGyyHMhmd2Wf/N+rZFeJmReqrEecscym5Jypss4LlNIbMs=
   file_glob: true
   file:
-    - dist/$TARGET-$VERSION-*-amd64.tgz
+    - dist/$NAME-$VERSION-*-amd64.tgz
   skip_cleanup: true
   on:
-    repo: trentrosenbaum/$TARGET
+    repo: trentrosenbaum/cobra-cli-quickstart
     tags: true
     condition: $TRAVIS_GO_VERSION =~ ^1\.12
